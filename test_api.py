@@ -26,41 +26,41 @@ else:
 
 
 ## Put
-updatedData={
-    "name": "Test test",
-    "username": "Bret",
-    "email": "Sincere@april.biz",
-    "address": {
-      "street": "Kulas Light",
-      "suite": "Apt. 556",
-      "city": "Gwenborough",
-      "zipcode": "92998-3874",
-      "geo": {
-        "lat": "-37.3159",
-        "lng": "81.1496"
-      }
-    },
-    "phone": "1-770-736-8031 x56442",
-    "website": "hildegard.org",
-    "company": {
-      "name": "Romaguera-Crona",
-      "catchPhrase": "Multi-layered client-server neural-net",
-      "bs": "harness real-time e-markets"
-    }
-  },
-response = requests.put(url=api_url, json=updatedData)
-print("[-] put users response:")
-
-if response.status_code==200:
-    print(response.text)
-else:
-    print("[!] Failde to update user, response status is ", str(response.status_code))
-
-## Delete 
-# response = requests.delete(url=api_url)
+# updatedData={
+#   "name": "Test test",
+#   "username": "Bret",
+#   "email": "Sincere@april.biz",
+#   "address": {
+#     "street": "Kulas Light",
+#     "suite": "Apt. 556",
+#     "city": "Gwenborough",
+#     "zipcode": "92998-3874",
+#     "geo": {
+#       "lat": "-37.3159",
+#       "lng": "81.1496"
+#     }
+#   },
+#   "phone": "1-770-736-8031 x56442",
+#   "website": "hildegard.org",
+#   "company": {
+#     "name": "Romaguera-Crona",
+#     "catchPhrase": "Multi-layered client-server neural-net",
+#     "bs": "harness real-time e-markets"
+#   }
+# }
+# response = requests.put(url=api_url, json=updatedData)
 # print("[-] put users response:")
 
 # if response.status_code==200:
 #     print(response.text)
 # else:
 #     print("[!] Failde to update user, response status is ", str(response.status_code))
+
+## Delete 
+response = requests.delete(url=api_url)
+print("[-] put users response:")
+
+if response.status_code==200:
+    print(response.text)
+else:
+    print("[!] Failde to update user, response status is ", str(response.status_code))

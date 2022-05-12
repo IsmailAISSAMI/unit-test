@@ -15,7 +15,7 @@ class User(Resource):
         user = UserCollection.find_one({"_id": ObjectId(id)})
         return jsonify({
             'status': 'ok',
-            'message': 'The request to get data has succeeded.',
+            'message': 'The request to get the user with the following id = ['+str(id)+'] was succeeded.',
             'data': str(user)
         })
 
@@ -36,22 +36,36 @@ class User(Resource):
             }) 
 
     def put(self, id):
-        updatedData=json.loads(request.data)
-        UserCollection.find_one_and_update({"_id":ObjectId(id)}, {"$set" : updatedData}, upsert = False )
-            
-        return jsonify({
-            'status': 'ok',
-            'message': 'The user was created succsseffly.',
-            'data': str(newUser)
-        })
+        if request.method == "PUT":
+            user = json.loads(request.data)
+            UserCollection.find_one_and_update({"_id":ObjectId(id)}, {"$set" : user}, upsert = True)
+            return {
+                'status': 'ok',
+                'message': 'The user with the id = ['+str(id)+'] was modified successfly.',
+                'data': user
+            }
+        else: 
+            return {
+                'status': '403',
+                'message': 'Bad request.',
+                'data': []
+            }
          
 
     def delete(self, id):
-        return {
-            'status': 'ok',
-            'message': 'The user was deleted successfully.',
-            'data': [id]
-        }
+        if request.method == "DELETE":
+            UserCollection.delete_one({"_id":ObjectId(id)})
+            return {
+                'status': 'ok',
+                'message': 'The user with the id = ['+str(id)+'] was deleted successfly.',
+                'data': []
+            }
+        else: 
+            return {
+                'status': '403',
+                'message': 'Bad request.',
+                'data': []
+            }
 
 
 api.add_resource(User, '/users/<id>')

@@ -8,7 +8,3 @@ client = MongoClient(db_uri)
 # collections
 db = client["Cluster0"]
 UserCollection = db["Users"]
-
-# # find all
-# for x in UserCollection.find():
-#   print(x)
