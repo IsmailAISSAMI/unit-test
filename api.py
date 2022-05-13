@@ -1,74 +1,45 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
-from database import UserCollection
+from database import UsersCollection
 from bson.objectid import ObjectId
 import json
 
 app = Flask(__name__)
 api = Api(app)
 
+
 class User(Resource):
 
     def get(self, id):
-        user = UserCollection.find_one({"_id": ObjectId(id)})
-        return jsonify({
-            'status': 'ok',
-            'message': 'The request to get the user with the following id = ['+str(id)+'] was succeeded.',
-            'data': str(user)
-        })
+        founded = UsersCollection.find_one({"_id": ObjectId(id)})
+        return jsonify({'status': 'ok', 'message': 'The user '+str(id)+' was successfully found', 'data': str(founded)})
 
     def post(self, id):
         if request.method == 'POST':
-            newUser=json.loads(request.data)
-            UserCollection.insert_one(newUser)
-            return jsonify({
-                'status': 'ok',
-                'message': 'The user was created succsseffly.',
-                'data': str(newUser)
-            })
-        else: 
-            return jsonify({
-                'status': 'bad request',
-                'message': 'You need to insert user data.',
-                'data': []
-            }) 
+            new_user = json.loads(request.data)
+            UsersCollection.insert_one(new_user)
+            return jsonify({'status': 'ok', 'message': 'The user was created successfully.', 'data': str(new_user)})
+        else:
+            return jsonify({'status': 'bad request', 'message': 'Use POST methode.', 'data': 'None'})
 
     def put(self, id):
         if request.method == "PUT":
             user = json.loads(request.data)
-            UserCollection.find_one_and_update({"_id":ObjectId(id)}, {"$set" : user}, upsert = True)
-            return {
-                'status': 'ok',
-                'message': 'The user with the id = ['+str(id)+'] was modified successfly.',
-                'data': user
-            }
-        else: 
-            return {
-                'status': '403',
-                'message': 'Bad request.',
-                'data': []
-            }
-         
+            UsersCollection.find_one_and_update({"_id": ObjectId(id)}, {"$set": user}, upsert=True)
+            return jsonify({'status': 'ok', 'message': 'The user with the id = ['+str(id)+'] was modified successfly.', 'data': user})
+        else:
+            return jsonify({'status': 'Bad request', 'message': 'Use PUT methode.', 'data': 'None'})
 
     def delete(self, id):
         if request.method == "DELETE":
-            UserCollection.delete_one({"_id":ObjectId(id)})
-            return {
-                'status': 'ok',
-                'message': 'The user with the id = ['+str(id)+'] was deleted successfly.',
-                'data': []
-            }
-        else: 
-            return {
-                'status': '403',
-                'message': 'Bad request.',
-                'data': []
-            }
+            UsersCollection.delete_one({"_id": ObjectId(id)})
+            return jsonify({'status': 'ok', 'message': 'The user with the id = ['+str(id)+'] was deleted successfly.', 'data': []})
+        else:
+            return jsonify({'status': 'Bad request', 'message': 'Use DELETE methode.', 'data': 'None'})
 
 
 api.add_resource(User, '/users/<id>')
 
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)

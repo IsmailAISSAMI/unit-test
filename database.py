@@ -7,4 +7,4 @@ client = MongoClient(db_uri)
 
 # collections
 db = client["Cluster0"]
-UserCollection = db["Users"]
+UsersCollection = db["Users"]
