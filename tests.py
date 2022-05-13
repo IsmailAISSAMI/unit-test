@@ -11,26 +11,24 @@ class TestUser(unittest.TestCase):
     def setUp(self):
         self.url = 'http://127.0.0.1:5000/users/'
         self.firstUser = '627d15bbf51252ebe7d18927'     # usersData[0]
-        self.secondUser = '627cf6cc67b8b70a38affe5a'    # usersData[1]
+        self.secondUser = '627d15bef51252ebe7d18929'    # usersData[1]
         self.newUser = usersData[2]
         self.updateUser = usersData[3]
 
     def test_get(self):
         response = requests.get(url=self.url+self.firstUser)
-        print(response)
         body = json.loads(response.text)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(body['status'], 'ok')
         self.assertEqual(usersData[0], UsersCollection.find_one(usersData[0], {'_id': 0}))
 
     def test_post(self):
-        response = requests.post(
-            url=self.url+self.firstUser, json=self.newUser)
+        response = requests.post(url=self.url+self.firstUser, json=self.newUser)
         body = json.loads(response.text)
+        print(body)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(body['status'], 'ok')
-        self.assertEqual(self.newUser, UsersCollection.find_one(
-            self.newUser, {'_id': 0}))
+        self.assertEqual(self.newUser, UsersCollection.find_one(self.newUser, {'_id': 0}))
 
     def test_put(self):
         updatedData = {
